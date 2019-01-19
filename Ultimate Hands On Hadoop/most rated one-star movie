@@ -8,10 +8,10 @@ nameLookup = FOREACH metadata GENERATE movieID, movieTitle;
 
 groupedRatings = GROUP ratings BY movieID;
 
-avgRatings = FOREACH groupedRatings GENERATE group AS movieID, AVG(ratings.rating) AS avgRating, 
+averageRatings = FOREACH groupedRatings GENERATE group AS movieID, AVG(ratings.rating) AS avgRating, 
 	COUNT(ratings.rating) AS numRatings;
 
-OneStarMovies = FILTER avgRatings BY avgRating < 2.0;
+badMovies = FILTER avgRatings BY avgRating < 2.0;
 
 namedBadMovies = Join badMovies by movieID, nameLookup BY movieID;
 
