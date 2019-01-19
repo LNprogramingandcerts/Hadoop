@@ -1,0 +1,12 @@
+ratings = LOAD '/user/maria_dev/ml-100k/u.data' AS (userID:int, movieID:int, rating:int, ratingTime:int);
+
+
+ratingsByMovie = GROUP ratings BY movieID;
+
+avgRatings = FOREACH ratingsByMovie GENERATE group AS movieID, AVG(ratings.rating) AS avgRating;
+
+OneStarMovies = FILTER avgRatings BY avgRating < 2.0;
+
+mostonestarmovies = ORDER fiveStarsWithData BY avgRatings::avgRating;
+
+DUMP mostonestarmovies;
